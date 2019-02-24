@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatTableDataSource } from '@angular/material';
 
-import { Issue } from '../../models/issue.model';
+import { Song } from '../../models/issue.model';
 import { IssueService } from '../../services/issue.service';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { SongDetailsComponent } from '../song-details/song-details.component';
 
 @Component({
   selector: 'app-list',
@@ -11,32 +12,82 @@ import { IssueService } from '../../services/issue.service';
   styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit {
-  issues: Issue[];
-  displayedColumns = ['title', 'responsible', 'severity', 'status', 'actions'];
+  searchMode:Boolean=true;
+  searchId:String;
+  searchSong: Song[];
+  songs: Song[];
+  selectSort:any;
+  sorts=['name','artists','rank'];
 
-  constructor(private issueService: IssueService, private router: Router) { }
+  constructor(private issueService: IssueService, private router: Router,public dialog: MatDialog) { }
 
   ngOnInit() {
     this.fetchIssues();
+    
   }
 
   fetchIssues() {
     this.issueService
     .getIssues()
-    .subscribe((data: Issue[]) => {
-      this.issues = data;
-      console.log('Data requested ... ');
-      console.log(this.issues);
+    .subscribe((data: Song[]) => {
+      this.songs = data;
+      
+      
     });
   }
 
-  editIssue(id) {
-    this.router.navigate([`/edit/${id}`]);
+  searchDb(){
+
+    this.issueService.getIssueById(this.searchId).subscribe((res:Song[])=> {
+     this.searchSong = res;
+      console.log(res);
+      
+
+    });
+
+    this.searchMode=false;
+
+  }
+  goBack(){
+    this.searchMode=true;
   }
 
-  deleteIssue(id) {
-    this.issueService.deleteIssue(id).subscribe(() => {
-      this.fetchIssues();
+  openDialog(song): void {
+   
+    
+    
+    const dialogRef = this.dialog.open(SongDetailsComponent, {
+      width: '40%',
+      data: {song: song }
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+     
+    });
+
   }
+
+  sortId(){
+    console.log(this.selectSort);
+
+    
+    this.issueService.sortIssueById(this.selectSort).subscribe((res:Song[])=> {
+
+      this.songs = res;
+       console.log(res);
+       
+ 
+     });
+    
+  }
+
+  fixTime(Intime){
+
+    var minute = Math.floor(Intime/60000);  
+    var second = Intime % 60;
+    return minute + ":" + second;  
+  }
+
 }
+  

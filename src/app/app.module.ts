@@ -3,11 +3,12 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ListComponent } from './components/list/list.component';
-import { CreateComponent } from './components/create/create.component';
-import { EditComponent } from './components/edit/edit.component';
-import { SharedComponentsModule } from './shared-components/shared-components.module';
+
+
 import { ServicesModule } from './services/services.module';
-import { ReactiveFormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatDialogModule} from '@angular/material/dialog'; 
 import { MatToolbarModule, 
   MatFormFieldModule, 
   MatInputModule, 
@@ -19,21 +20,22 @@ import { MatToolbarModule,
   MatTableModule, 
   MatDividerModule, 
   MatSnackBarModule } from '@angular/material';
-import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { SongDetailsComponent } from './components/song-details/song-details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ListComponent,
-    CreateComponent,
-    EditComponent,
+  
+    SongDetailsComponent
 
   ],
   imports: [
+    BrowserAnimationsModule,
     BrowserModule,
     AppRoutingModule,
-    SharedComponentsModule,
+   
     ServicesModule,
     BrowserModule,
     HttpClientModule,
@@ -48,7 +50,9 @@ import { HttpClientModule } from '@angular/common/http';
     MatTableModule,
     MatDividerModule,
     MatSnackBarModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

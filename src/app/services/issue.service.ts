@@ -6,20 +6,12 @@ import { HttpClient } from '@angular/common/http';
 })
 export class IssueService {
 
+  //uri = 'http://localhost:4000';
   uri = 'https://heroku-angular-backend.herokuapp.com';
 
   constructor(private http: HttpClient) {
   }
 
-  addIssue(title, responsible, description, severity) {
-    const issue = {
-      title: title,
-      responsible: responsible,
-      description: description,
-      severity: severity
-    };
-    return this.http.post(`${this.uri}/issues/add`, issue);
-  }
 
   getIssues() {
     return this.http.get(`${this.uri}/issues`);
@@ -29,18 +21,9 @@ export class IssueService {
     return this.http.get(`${this.uri}/issues/${id}`);
   }
 
-  updateIssue(id, title, responsible, description, severity, status) {
-    const issue = {
-      title: title,
-      responsible: responsible,
-      description: description,
-      severity: severity,
-      status: status
-    };
-    return this.http.post(`${this.uri}/issues/update/${id}`, issue);
+  sortIssueById(id){
+    return this.http.get(`${this.uri}/sort/issues/${id}`);
   }
 
-  deleteIssue(id) {
-    return this.http.get(`${this.uri}/issues/delete/${id}`);
-  }
+ 
 }

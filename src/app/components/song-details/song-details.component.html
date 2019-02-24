@@ -1,0 +1,20 @@
+
+
+
+  <div class="card text-center">
+      <div class="card-header">
+        Featured in top 50
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{data.song.name}}</h5>
+        <p class="card-text">{{data.song.artists}}</p>
+        <p class="card-text">Duration: {{fixTime(data.song.duration_ms)}} min</p>
+        <p class="card-text">Tempo: {{data.song.tempo}}</p>
+        <p class="card-text">Danceable?: {{danceability}}</p>
+
+        <a href="#" class="btn btn-primary">Listen now</a>
+      </div>
+      <div class="card-footer text-muted">
+        Rank #{{data.song.rank}}
+      </div>
+    </div>

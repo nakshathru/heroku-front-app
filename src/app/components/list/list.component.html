@@ -1,41 +1,103 @@
-<div>
-  <br>
-  <mat-card>
-    <button mat-raised-button color="primary" routerLink="/create">Create New Issue</button>
-    <br><br>
-    <mat-divider></mat-divider>
-    <br>
-    <table mat-table [dataSource]="issues">
-      <ng-container matColumnDef="title">
-        <th mat-header-cell *matHeaderCellDef> Title </th>
-        <td mat-cell *matCellDef="let element"> {{element.title}} </td>
-      </ng-container>
 
-      <ng-container matColumnDef="responsible">
-        <th mat-header-cell *matHeaderCellDef> Responsible </th>
-        <td mat-cell *matCellDef="let element"> {{element.responsible}} </td>
-      </ng-container>
+<div class="main-body">
 
-      <ng-container matColumnDef="severity">
-        <th mat-header-cell *matHeaderCellDef> Severity </th>
-        <td mat-cell *matCellDef="let element"> {{element.severity}} </td>
-      </ng-container>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Spotify</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Chartbuster <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Playlist</a>
+        </li>
+       
+        
+      </ul>
+      <div class="form-inline my-2 my-lg-0">
+        <input [(ngModel)]="searchId" #ctrl="ngModel"(ngModelChange)="searchDb()" class="form-control mr-sm-2" type="search" placeholder="Instant Search" aria-label="Search">
+        
+        
+      </div>
+    </div>
+  </nav>
+  
+  
+  <div *ngIf="searchMode">
+  <h6 class="display-4 mt-5 mb-3 d-flex justify-content-center heading">Top 50 Songs</h6>
 
-      <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef> Status </th>
-        <td mat-cell *matCellDef="let element"> {{element.status}} </td>
-      </ng-container>
+  <div class="card bg-light ml-5 mr-5 mb-3 " >
+      
+      <div class="card-body mx-auto">
+        
 
-      <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef class="mat-column-right"> Actions </th>
-          <td mat-cell *matCellDef="let element" class="mat-column-right">
-            <button mat-button color="primary" (click)="editIssue(element._id)">Edit</button>
-            <button mat-button color="warn" (click)="deleteIssue(element._id)">Delete</button>
-          </td>
-        </ng-container>
+          <mat-form-field >
+              <mat-select  placeholder="Sort by" [(ngModel)]="selectSort" (ngModelChange)="sortId()" >
+                <mat-option *ngFor="let sort of sorts" [value]="sort">
+                  {{sort}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+             </div>
+      </div>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-  </mat-card>
+ 
+
+
+  
+    <div class="list-group"  *ngFor='let song of songs ;let i = index' [attr.data-index]="i"  >
+  
+      <div class="card ml-5 mr-5 mb-3 hvr-bounce-out" >
+        <div class="card-body">
+          <h5 class="card-title"> {{i+1}}  {{song.name}}</h5>
+          <h6 class="card-subtitle mb-2 text-muted d-flex justify-content-start"> {{song.artists}}</h6>
+          <a  (click)="openDialog(song) "class="card-link btn btn-secondary">More details</a>
+          <div class="right-content">
+              <h6 class="card-subtitle mb-2 text-muted d-flex justify-content-end">Duration:</h6>
+              <h6 class="card-subtitle mb-2 text-muted d-flex justify-content-end">{{fixTime(song.duration_ms)}} min</h6>
+          </div>
+         
+          <button type="button" class="btn btn-primary mx-auto d-block">Start Listening</button>
+
+
+        </div>
+      </div>
+   
+    </div>
+  </div>
+
+  <div class="search" *ngIf="!searchMode">
+      <h6 class="display-4 mt-5 mb-3 d-flex justify-content-center heading">Search result</h6>
+    <div class="list-group"   >
+  
+      <div class="card ml-5 mr-5 mb-3" >
+        <div class="card-body">
+          <h5 class="card-title"> {{searchSong.name}}</h5>
+          <h6 class="card-subtitle mb-2 text-muted d-flex justify-content-start">{{searchSong.artists}}</h6>
+          <div class="right-content1">
+              <h6 class="card-subtitle mb-2 text-muted d-flex justify-content-end">Duration:</h6>
+              <h6 class="card-subtitle mb-2 text-muted d-flex justify-content-end">{{fixTime(searchSong.duration_ms)}} min</h6>
+          </div>
+          <button type="button" class="btn btn-primary mx-auto d-block">Start Listening</button>
+          
+         
+          <a  (click)="openDialog(searchSong) "class="card-link btn btn-secondary">More details</a>
+          
+        </div>
+      </div>
+   
+    </div>
+
+    <button type="button" (click)="goBack()" class="btn btn-secondary  ml-5 mr-5 mb-3 ">Go back</button>
+  </div>
+ 
+  
+  
+  
+
 </div>
+
